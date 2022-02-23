@@ -1,15 +1,5 @@
-// app.js in src folder contains our JSX
-// app.js in scripts folder is an auto generated file that contains babel transformations
-
-// Here is where we have access to all of the features of react and react-dom
 console.log('App.js is running');
 
-// JSX- Javascript XML
-// - It's a javascript syntax extension. It's provided to us by React
-// - define our templates, inject our data into those templates
-// JSX makes working with templates much easier than it was in the past
-
-// Note: JSX elements MUST have a root element. You can just wrap everything in a div.
 const app = {
   title: 'Indecision App',
   subtitle: 'An app whose purpose is currently unknown.',
@@ -28,31 +18,38 @@ const template = (
   </div>
 );
 
-const user = {
-  name: 'Molly Novash',
-  age: 30,
-  location: 'Grant\'s Pass'
+let count = 0;
+const addOne = () => {
+  count++;
+  console.log('addOne');
+  renderCounterApp();
 };
 
-function getLocation(location) {
-  if (location) {
-    return <p>Location: {location}</p>;
-  } 
-  // note: undefined is implicitly returned if it isn't explicity returned
-  // so you could say else { return undefined; } but you don't have to
+const minusOne = () => {
+  count--;
+  console.log('minusOne');
+  renderCounterApp();
 }
 
-const templateTwo = (
-  <div>
-    <h1>{user.name ? user.name : 'Anonymous'}</h1>
-    {(user.age && user.age >= 18) && <p>Age: {user.age}</p>}
-    {getLocation(user.location)}
-  </div>
-);
+const reset = () => {
+  count = 0;
+  console.log('Reset');
+  renderCounterApp();
+}
 
-// Here we use the document api to fetch the dom element (the div in index.html) where we want to inject the content of the 'template' variable
 const appRoot = document.getElementById('app');
 
-// Render your application.
-// ReactDOM.render() takes two args- the jsx you'd like to render, and the dom element where you want to render it
-ReactDOM.render(template, appRoot);
+const renderCounterApp = () => {
+  const templateTwo = (
+    <div>
+      <h1>Count: {count}</h1>
+      <button onClick={addOne}>+1</button>
+      <button onClick={minusOne}>-1</button>
+      <button onClick={reset}>Reset</button>
+    </div>
+  );
+
+  ReactDOM.render(templateTwo, appRoot);
+};
+
+renderCounterApp();
