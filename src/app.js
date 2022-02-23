@@ -10,24 +10,49 @@ console.log('App.js is running');
 // JSX makes working with templates much easier than it was in the past
 
 // Note: JSX elements MUST have a root element. You can just wrap everything in a div.
-var template = (
+const app = {
+  title: 'Indecision App',
+  subtitle: 'An app whose purpose is currently unknown.',
+  options: ['One', 'Two']
+};
+
+const template = (
   <div>
-    <h1>Indecision App</h1>
-    <p>This is some info.</p>
+    <h1>{app.title}</h1>
+    {app.subtitle && <p>{app.subtitle}</p>}
+    <p>{app.options.length > 0 ? 'Here are your options' : 'No options.'}</p>
+    <ol>
+      <li>Option One</li> 
+      <li>Option Two</li>
+    </ol>
   </div>
 );
 
-var templateTwo = (
+const user = {
+  name: 'Molly Novash',
+  age: 30,
+  location: 'Grant\'s Pass'
+};
+
+function getLocation(location) {
+  if (location) {
+    return <p>Location: {location}</p>;
+  } 
+  // note: undefined is implicitly returned if it isn't explicity returned
+  // so you could say else { return undefined; } but you don't have to
+}
+
+const templateTwo = (
   <div>
-    <h1>Molly Novash</h1>
-    <p>Age: 30</p>
-    <p>Location: Grant's Pass</p>
+    <h1>{user.name ? user.name : 'Anonymous'}</h1>
+    {(user.age && user.age >= 18) && <p>Age: {user.age}</p>}
+    {getLocation(user.location)}
   </div>
-)
+);
 
 // Here we use the document api to fetch the dom element (the div in index.html) where we want to inject the content of the 'template' variable
-var appRoot = document.getElementById('app');
+const appRoot = document.getElementById('app');
 
 // Render your application.
 // ReactDOM.render() takes two args- the jsx you'd like to render, and the dom element where you want to render it
-ReactDOM.render(templateTwo, appRoot);
+ReactDOM.render(template, appRoot);
