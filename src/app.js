@@ -3,53 +3,54 @@ console.log('App.js is running');
 const app = {
   title: 'Indecision App',
   subtitle: 'An app whose purpose is currently unknown.',
-  options: ['One', 'Two']
+  options: []
 };
 
-const template = (
-  <div>
-    <h1>{app.title}</h1>
-    {app.subtitle && <p>{app.subtitle}</p>}
-    <p>{app.options.length > 0 ? 'Here are your options' : 'No options.'}</p>
-    <ol>
-      <li>Option One</li> 
-      <li>Option Two</li>
-    </ol>
-  </div>
-);
 
-let count = 0;
-const addOne = () => {
-  count++;
-  console.log('addOne');
-  renderCounterApp();
+const onFormSubmit = (e) => {
+  e.preventDefault(); // stops the full page refresh, lets us run code right here to handle the event
+
+  const option = e.target.elements.option.value;
+
+  if(option){
+    app.options.push(option);
+    e.target.elements.option.value = '';
+    renderCounterApp();
+  }
 };
 
-const minusOne = () => {
-  count--;
-  console.log('minusOne');
-  renderCounterApp();
-}
-
-const reset = () => {
-  count = 0;
-  console.log('Reset');
+const onRemoveAll = () => {
+  app.options = [];
   renderCounterApp();
 }
 
 const appRoot = document.getElementById('app');
 
+const numbers = [55, 101, 1000];
+
 const renderCounterApp = () => {
-  const templateTwo = (
+  const template = (
     <div>
-      <h1>Count: {count}</h1>
-      <button onClick={addOne}>+1</button>
-      <button onClick={minusOne}>-1</button>
-      <button onClick={reset}>Reset</button>
+      <h1>{app.title}</h1>
+      {app.subtitle && <p>{app.subtitle}</p>}
+      <p>{app.options.length > 0 ? 'Here are your options' : 'No options.'}</p>
+      <p>{app.options.length}</p>
+      <button onClick={onRemoveAll}>Remove All</button>
+      <ol>
+        {
+          app.options.map((option) => {
+            return <li key={option}>{option}</li>;
+          })
+        }
+      </ol>
+      <form onSubmit={onFormSubmit}>
+        <input type="text" name="option"/>
+        <button>Add Option</button>
+      </form>
     </div>
   );
 
-  ReactDOM.render(templateTwo, appRoot);
-};
+  ReactDOM.render(template, appRoot);
+}
 
 renderCounterApp();
